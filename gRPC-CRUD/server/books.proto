@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package booksPackage;
+
+service getBooks{
+    rpc getAvailableBooks(Empty) returns (booksList){}
+    rpc createBooks(books) returns (books);
+    rpc updateBooks(books) returns (books);
+}   
+
+
+
+message empty {}
+
+message books {
+     int32 id_buku = 1;
+     string judul = 2;
+     string penulis = 3;
+     string tahun_terbit = 4;
+}   
+
+message booksList {
+    repeated Books book = 1;
+}
+
+message requestBookId {
+    int id_buku = 1;
+}
+
