@@ -3,7 +3,7 @@ syntax = "proto3";
 package booksPackage;
 
 message books {
-    int32 id_buku = 1;
+    int64 id_buku = 1;
     string judul = 2;
     string penulis = 3;
     string tahun_terbit = 4;
