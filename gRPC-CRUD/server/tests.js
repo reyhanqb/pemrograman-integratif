@@ -1,15 +1,9 @@
-const client = require('./client')
+const client = require("./client");
 
-// client.getBooks({}, (error, books) => {
-//     if(error)
-//         throw error;
+const request = { id_buku: "" };
 
-//     console.log(books)
-// })
+const id_buku = "";
 
-
-
-const request = { id: 1 };
 client.getBooks(request, (error, response) => {
   if (error) {
     console.error(error);
@@ -18,16 +12,18 @@ client.getBooks(request, (error, response) => {
   }
 });
 
-client.addBooks({ 
-    judul : "Theory of Everything",
-    penulis : "penulis",
-    tahun_terbit: "sudah lama"
-
-}, (error, response) => {
-    if (error){
-        console.log(error)
-    }
-    else {
-        console.log(response.books)
-    }
-})
+// client.addBooks(
+//   {
+//     id_buku: "",
+//     judul: "Judul baru",
+//     penulis: "John Doe",
+//     tahun_terbit: "2022",
+//   },
+//   (err, response) => {
+//     if (err) {
+//       console.error(err);
+//     } else {
+//       console.log(response.data);
+//     }
+//   }
+// );

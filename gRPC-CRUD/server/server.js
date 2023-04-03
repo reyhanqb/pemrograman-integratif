@@ -21,12 +21,80 @@ var db = mysql.createConnection({
 });
 
 server.addService(booksPackage.newService.service, {
-  addBooks: addBooks,
-  getBooks: getBooks,
-  // "deleteBooks" :deleteBooks
-});
+  addBooks(call, callback) {
+    // const id = call.request.id_buku;
+    const judul = call.request.judul;
+    const penulis = call.request.penulis;
+    const tahun_terbit = call.request.tahun_terbit;
+    const query = `INSERT INTO buku ( judul, penulis, tahun_terbit) VALUES ('${judul}', '${penulis}', '${tahun_terbit}')`;
+    db.query(query, (err, result) => {
+      if (err) {
+        callback({});
+        console.log(err);
+      } else {
+        callback(null, { message: "buku berhasil ditambahkan" });
+        console.log(result);
+      }
+    });
+  },
+  getBooks(call, callback) {
+    const query = "SELECT * FROM buku";
+    db.query(query, (err, result) => {
+      if (err) {
+        callback({
+          message: "gagal mengambil data buku",
+        });
+      } else if (result.length === 0) {
+        callback({
+          message: "buku tidak ditemukan",
+        });
+      } else {
+        const books = [];
+        result.forEach((book) => {
+          books.push({
+            id_buku: book.id_buku,
+            judul: book.judul,
+            penulis: book.penulis,
+            tahun_terbit: book.tahun_terbit,
+          });
+        });
+        callback(null, { books: books });
+        console.log(books);
+      }
+    });
+  },
+  deleteBooks(call, callback) {
+    const id = 4;
+    const query = `DELETE FROM buku WHERE id_buku = '${id}'`;
 
-let books = [];
+    db.query(query, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        callback(null, "Successfully deleted book");
+      }
+    });
+  },
+  updateBooks(call, callback) {
+    let id = uuidv1();
+    let { judul, penulis, tahun_terbit } = call.request;
+    const query = `UPDATE buku SET judul = ?, penulis = ?, tahun_terbit = ? WHERE id_buku = '${id}'`;
+
+    db.query(query, [judul, penulis, tahun_terbit], (err, result) => {
+      if (err) {
+        console.log(err);
+        callback(err, null);
+      } else {
+        if (typeof callback === "function") {
+          callback(null, "Successfully updated book");
+        }
+        else {
+          console.log(err)
+        }
+      }
+    });
+  },
+});
 
 server.bindAsync(
   "127.0.0.1:50001",
@@ -39,37 +107,36 @@ server.bindAsync(
   }
 );
 
-function getBooks(call, callback) {
-  const query = "SELECT * FROM buku";
-  const id = call.request.id;
-  console.log(id)
-  db.query(query, (err, result) => {
-    if (err || result.length === 0) {
-      callback({
-        message: "buku tidak ditemukan",
-      });
-    } else {
-      callback(null, { user: result[0] });
-    }
-  });
-}
+// function getBooks(call, callback) {
+//   const query = "SELECT * FROM buku";
+//   const id = call.request.id;
+//   console.log(id)
+//   db.query(query, (err, result) => {
+//     if (err || result.length === 0) {
+//       callback({
+//         message: "buku tidak ditemukan",
+//       });
+//     } else {
+//       callback(null, { user: result[0] });
+//     }
+//   });
+// }
 
-function addBooks(call, callback) {
-  const query =
-    "INSERT INTO buku (judul, penulis, tahun_terbit) VALUES (?, ?, ?)";
-  const { judul, penulis, tahun_terbit } = call.request;
-  db.query(query, [judul, penulis, tahun_terbit], (err, result) => {
-    if (err) {
-      callback({
-        message: "gagal menambahkan buku",
-      });
-    } else {
-      callback(null, { message: "buku berhasil ditambahkan" });
-      console.log(result)
-    }
-  });
-}
-
+// function addBooks(call, callback) {
+//   const query =
+//     "INSERT INTO buku (judul, penulis, tahun_terbit) VALUES (?, ?, ?)";
+//   const { judul, penulis, tahun_terbit } = call.request;
+//   db.query(query, [judul, penulis, tahun_terbit], (err, result) => {
+//     if (err) {
+//       callback({
+//         message: "gagal menambahkan buku",
+//       });
+//     } else {
+//       callback(null, { message: "buku berhasil ditambahkan" });
+//       console.log(result)
+//     }
+//   });
+// }
 
 /* 
 
