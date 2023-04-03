@@ -7,6 +7,8 @@ const client = require('./client')
 //     console.log(books)
 // })
 
+
+
 const request = { id: 1 };
 client.getBooks(request, (error, response) => {
   if (error) {
@@ -15,3 +17,17 @@ client.getBooks(request, (error, response) => {
     console.log(response.data);
   }
 });
+
+client.addBooks({ 
+    judul : "Theory of Everything",
+    penulis : "penulis",
+    tahun_terbit: "sudah lama"
+
+}, (error, response) => {
+    if (error){
+        console.log(error)
+    }
+    else {
+        console.log(response.books)
+    }
+})

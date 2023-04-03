@@ -9,28 +9,7 @@
 </head>
 
 <body>
-    <h1>gRPC Client</h1>
-    <label for="book-id">Book ID:</label>
-    <input type="text" id="book-id">
-    <button id="get-book-btn">Get Book</button>
-    <div id="result"></div>
-    <script>
-        const booksPackage = grpc.loadPackageDefinition(protoLoader.loadSync(PROTO_PATH, {})).booksPackage;
-        const client = new booksPackage.newService('localhost:5000', grpc.credentials.createInsecure());
 
-        const getBookButton = document.getElementById('get-book-btn');
-        getBookButton.onclick = function () {
-            const id = document.getElementById('book-id').value;
-            const request = { id: id };
-            client.getBooks(request, function (error, response) {
-                if (error) {
-                    document.getElementById('result').innerHTML = error.message;
-                } else {
-                    document.getElementById('result').innerHTML = `Title: ${response.user.title}, Author: ${response.user.author}`;
-                }
-            });
-        };
-    </script>
 </body>
 
 </html>

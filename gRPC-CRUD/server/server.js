@@ -69,3 +69,30 @@ function addBooks(call, callback) {
     }
   });
 }
+
+
+/* 
+
+function addMahasiswa(call, callback) {
+    
+    const id_mahasiswa = call.request.id_mahasiswa;
+    const nama = call.request.nama;
+    const nrp = call.request.nrp;
+    const nilai = call.request.nilai;
+  
+    connection.query(
+      `INSERT INTO mahasiswa (id_mahasiswa, nama, nrp, nilai) VALUES (?, ?, ?, ?)`,
+      [id_mahasiswa, nama, nrp, nilai],
+      (error, results, fields) => {
+        if (error) {
+          console.error('Error:', error);
+          callback(error, null);
+          return;
+        }
+  
+        callback(null, { message: 'Mahasiswa berhasil ditambahkan' });
+      }
+    );
+  }
+
+*/
