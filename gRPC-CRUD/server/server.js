@@ -25,8 +25,7 @@ server.addService(booksPackage.newService.service, {
     // const id = call.request.id_buku;
     const judul = call.request.judul;
     const penulis = call.request.penulis;
-    const tahun_terbit = call.request.tahun_terbit;
-    const query = `INSERT INTO buku ( judul, penulis, tahun_terbit) VALUES ('${judul}', '${penulis}', '${tahun_terbit}')`;
+    const query = `INSERT INTO buku ( judul, penulis) VALUES ('${judul}', '${penulis}')`;
     db.query(query, (err, result) => {
       if (err) {
         callback({});
@@ -55,7 +54,6 @@ server.addService(booksPackage.newService.service, {
             id_buku: book.id_buku,
             judul: book.judul,
             penulis: book.penulis,
-            tahun_terbit: book.tahun_terbit,
           });
         });
         callback(null, { books: books });
@@ -76,20 +74,27 @@ server.addService(booksPackage.newService.service, {
     });
   },
   updateBooks(call, callback) {
-    let id = uuidv1();
-    let { judul, penulis, tahun_terbit } = call.request;
-    const query = `UPDATE buku SET judul = ?, penulis = ?, tahun_terbit = ? WHERE id_buku = '${id}'`;
+    const id = 1;
+    let { id_buku, judul, penulis } = call.request;
+    const query = `UPDATE buku SET judul = ?, penulis = ? WHERE id_buku = '${id}'`;
 
-    db.query(query, [judul, penulis, tahun_terbit], (err, result) => {
+    console.log(judul);
+
+    db.query(query, [judul, penulis], (err, result) => {
       if (err) {
         console.log(err);
         callback(err, null);
       } else {
+        const books = { judul, penulis };
         if (typeof callback === "function") {
-          callback(null, "Successfully updated book");
-        }
-        else {
-          console.log(err)
+          callback(null, books);
+        } else {
+          const row = res.rows[0];
+          const books = new books();
+          books.id_buku = row.id_buku;
+          books.judul = row.judul;
+          books.penulis = row.penulis;
+          console.log("successfully updated book");
         }
       }
     });
@@ -124,9 +129,9 @@ server.bindAsync(
 
 // function addBooks(call, callback) {
 //   const query =
-//     "INSERT INTO buku (judul, penulis, tahun_terbit) VALUES (?, ?, ?)";
-//   const { judul, penulis, tahun_terbit } = call.request;
-//   db.query(query, [judul, penulis, tahun_terbit], (err, result) => {
+//     "INSERT INTO buku (judul, penulis) VALUES (?, ?, ?)";
+//   const { judul, penulis } = call.request;
+//   db.query(query, [judul, penulis], (err, result) => {
 //     if (err) {
 //       callback({
 //         message: "gagal menambahkan buku",

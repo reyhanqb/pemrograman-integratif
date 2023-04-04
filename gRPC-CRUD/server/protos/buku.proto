@@ -3,10 +3,9 @@ syntax = "proto3";
 package booksPackage;
 
 message books {
-    int64 id_buku = 1;
+    int32 id_buku = 1;
     string judul = 2;
     string penulis = 3;
-    string tahun_terbit = 4;
 }
 
 message booksList {
@@ -17,17 +16,12 @@ message booksId {
     int32 id_buku = 1;
 }
 
-message updateClientBooks {
-    int64 id_buku = 1;
-    string judul = 2;
-    string penulis = 3;
-    string tahun_terbit = 4;
-}
+
 
 message updatedBooks {
-    string judul = 1;
-    string penulis = 2;
-    string tahun_terbit = 3;
+    int32 id_buku = 1;
+    string judul = 2;
+    string penulis = 3;
 }
 
 message empty {}
@@ -36,5 +30,5 @@ service newService {
     rpc addBooks (books) returns (books) {}
     rpc getBooks (empty) returns (booksList) {}
     rpc deleteBooks (booksId) returns (empty) {}
-    rpc updateBooks (updateClientBooks) returns (updatedBooks) {}
+    rpc updateBooks (updatedBooks) returns (books) {}
 }
