@@ -1,1 +1,1 @@
-MQTT Testing with Mosquitto, Kafka, AMPQ
+Message queue Testing with Mosquitto, Kafka, AMPQ
