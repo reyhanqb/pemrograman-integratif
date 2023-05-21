@@ -62,13 +62,14 @@ server.addService(booksPackage.newService.service, {
     });
   },
   deleteBooks(call, callback) {
-    const id = 4;
+    const id = 3;
     const query = `DELETE FROM buku WHERE id_buku = '${id}'`;
 
     db.query(query, (err, result) => {
       if (err) {
         console.log(err);
       } else {
+        console.log(`Deleted book with id = ${id}`);
         callback(null, "Successfully deleted book");
       }
     });
