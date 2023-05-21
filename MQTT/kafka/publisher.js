@@ -2,28 +2,19 @@ const { Kafka } = require("kafkajs");
 
 const kafka = new Kafka({
   clientId: "my-app",
-  brokers: ["kafka1:9092", "kafka2:9092"],
+  brokers: ["localhost:9092", "localhost:9093"],
 });
 
 const producer = kafka.producer();
 
-await producer.connect();
-await producer.send({
-  topic: "my topic",
-  messages: [{ value: "Hello world!" }],
-});
+async function runPublisher() {
+  await producer.connect();
+  await producer.send({
+    topic: "mytopic",
+    messages: [{ value: "Hello from node" }],
+  });
 
-await producer.disconnect();
+  await producer.disconnect();
+}
 
-const consumer = kafka.consumer({ groupId: "test-group" });
-
-await consumer.connect();
-await consumer.subscribe({ topic: "my topic", fromBeginning: true });
-
-await consumer.run({
-  eachMessage: async ({ topic, partition, message }) => {
-    console.log({
-      value: message.value.toString(),
-    });
-  },
-});
+runPublisher();
